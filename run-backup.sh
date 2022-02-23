@@ -67,7 +67,7 @@ function snapshot(){
 
 }
 
-# Remove and maintaine snapshots number <= SNAPSHOT_HISTORY_KEEP
+# Remove and maintain snapshots number <= SNAPSHOT_HISTORY_KEEP
 # Params: $1 - etcd snapshot file name prefix
 function cleanOldSnapshots(){
     logInfo "Cleaning old snapshots ... Number of snapshots to keep: $SNAPSHOT_HISTORY_KEEP"
@@ -133,7 +133,7 @@ function downloadKubeFiles(){
 
     wget "https://dl.k8s.io/release/${KUBE_VERSION}/bin/linux/${KUBE_ARC}/kubectl" -O ${KUBE_PATH}/kubectl
     wget "https://dl.k8s.io/${KUBE_VERSION}/bin/linux/${KUBE_ARC}/kubectl.sha256" -O ${KUBE_PATH}/kubectl.sha256
-    echo "$(<${KUBE_PATH}/kubectl.sha256)  ${KUBE_PATH}/kubectl" | sha256sum -cs
+    echo "$(<${KUBE_PATH}/kubectl.sha256)  ${KUBE_PATH}/kubectl" | sha256sum -c --status
     if [ $? -ne 0 ]; then
         logError "kubectl checksum failed. Please check you have internal connection to download kubectl file from https://dl.k8s.io/release/${KUBE_VERSION}/bin/linux/${KUBE_ARC}/kubectl"
         exit 1

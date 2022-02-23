@@ -67,7 +67,7 @@ function snapshot(){
 
 }
 
-# Remove and maintaine snapshots number <= SNAPSHOT_HISTORY_KEEP
+# Remove and maintain snapshots number <= SNAPSHOT_HISTORY_KEEP
 # Params: $1 - etcd snapshot file name prefix
 function cleanOldSnapshots(){
     logInfo "Cleaning old snapshots ... Number of snapshots to keep: $SNAPSHOT_HISTORY_KEEP"

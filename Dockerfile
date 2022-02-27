@@ -35,7 +35,7 @@ ENV DEV_MODE="off"
 # Number of snapshot history to keep
 ENV SNAPSHOT_HISTORY_KEEP=3
 
-Run microdnf update -y \
+RUN microdnf update -y \
     && microdnf install -y jq wget \
     # Change to 'install -y tzdata' when bug is resolved upstream.
     && microdnf reinstall -y tzdata \

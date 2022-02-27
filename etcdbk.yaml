@@ -71,7 +71,7 @@ spec:
               value: "Asia/Kuala_Lumpur"
             name: etcdbk
             image: nexus.internal:7082/repository/containers/etcdbk:1.0.0
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             resources:
               requests:
                 cpu: 100m

@@ -24,6 +24,14 @@ spec:
       storage: 1Gi
 ---
 
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: etcdbk
+  namespace: etcdbk
+
+---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -41,14 +49,15 @@ metadata:
   name: etcdbk
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: etcdbk
   namespace: etcdbk
 roleRef:
   kind: ClusterRole 
   name: etcdbk
   apiGroup: rbac.authorization.k8s.io
-  
+
 ---
+
 
 apiVersion: batch/v1
 kind: CronJob
@@ -65,10 +74,21 @@ spec:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: Exists
           containers:
           - env:
             - name: TZ
               value: "Asia/Kuala_Lumpur"
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             name: etcdbk
             image: nexus.internal:7082/repository/containers/etcdbk:1.0.0
             imagePullPolicy: Always
@@ -83,6 +103,12 @@ spec:
             - mountPath: /data
               name: data-dir
           restartPolicy: OnFailure
+          serviceAccountName: etcdbk
+          tolerations:
+          - effect: NoSchedule
+            operator: Exists
+          - effect: NoExecute
+            operator: Exists
           volumes:
           - hostPath:
               path: /etc/kubernetes/pki/etcd

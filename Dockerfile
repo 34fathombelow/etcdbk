@@ -12,7 +12,7 @@ RUN apk add --no-cache bash git go \
     && ./build.sh \
     && cp /etcd-source/bin/etcdctl /etcd
 
-From redhat/ubi8-minimal:8.5-230
+FROM redhat/ubi8-minimal:8.5-230
 
 # kubectl version to use
 ENV KUBE_VERSION="v1.22.4"
